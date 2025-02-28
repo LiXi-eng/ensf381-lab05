@@ -1,0 +1,99 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>Lab5 - Exercise 1</title> 
+</head> 
+<body> 
+
+    <input type="text" id="textInput" placeholder="Enter a user number (1 to 30): "/> 
+
+    <label id="textLabel"></label> 
+    <button id="redButton">Red</button> 
+    <button id="blueButton">Blue</button> 
+    <button id="greenButton">Green</button> 
+    <button id="orangeButton">Orange</button> 
+    <button id="purpleButton">Purple</button> 
+
+</body> 
+
+<script type="text/javascript"> 
+
+    <!-- Your JavaScript code will go here --> 
+
+    var users;
+
+    document.getElementById("textInput").addEventListener("keypress", async function(event) { 
+        if (event.key === "Enter") { 
+            let textBox = event.target; 
+            let label = document.getElementById("textLabel"); 
+
+
+            await retrieveData();
+            findUser(); 
+
+
+            
+        } 
+    })
+    
+    function changeLabelColor(color) { 
+        document.getElementById("textLabel").style.color = color; 
+    }
+
+    document.getElementById("redButton").addEventListener("click", function() { 
+        changeLabelColor("red"); 
+    })
+
+    document.getElementById("blueButton").addEventListener("click", function() { 
+        changeLabelColor("blue"); 
+    })
+
+    document.getElementById("greenButton").addEventListener("click", function() { 
+        changeLabelColor("green"); 
+    })
+   
+    document.getElementById("orangeButton").addEventListener("click", function() { 
+        changeLabelColor("orange"); 
+    })
+
+    document.getElementById("purpleButton").addEventListener("click", function() { 
+        changeLabelColor("purple"); 
+    })
+    
+    async function retrieveData() {
+        try{
+            const response = await fetch("https://67c201ba61d8935867e517ee.mockapi.io/users_api"); 
+            users = await response.json();
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    async function findUser() { 
+        const userId = parseInt(document.getElementById("textInput").value); 
+        const label = document.getElementById("textLabel"); 
+
+        if (userId <= 0 || userId > 30) { 
+            label.textContent = "No users were found with the provided User_ID."; 
+            return; 
+        }
+
+        // const users = await retrieveData(); 
+        const user = users.find(AnyID => AnyID.id == userId); 
+
+        if (user) { 
+            label.textContent = `ID: ${user.id}, Name: ${user.first_name}, Group: ${user.user_group}`; 
+
+        } else { 
+            label.textContent = "No users were found with the provided User_ID."; 
+        } 
+
+    } 
+
+    
+   
+
+</script>
+
+</html> 
